@@ -1,0 +1,10 @@
+group = "com.theuran"
+
+compileJava {
+    archivesBaseName = "launcher"
+    version = ""
+}
+
+dependencies {
+    implementation project(":engine")
+}

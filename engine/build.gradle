@@ -1,0 +1,6 @@
+group = "mchorse"
+version = "0.1"
+
+compileJava {
+    archivesBaseName = "bbs-engine"
+}

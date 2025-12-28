@@ -1,0 +1,3 @@
+rootProject.name = "TheLauncher"
+
+include "launcher", "engine"

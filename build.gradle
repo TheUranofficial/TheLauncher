@@ -1,0 +1,25 @@
+subprojects {
+    apply plugin: "java"
+
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://jitpack.io/"
+        }
+    }
+
+    dependencies {
+        implementation "org.lwjgl:lwjgl:$lwjglVersion"
+        implementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"
+        implementation "org.lwjgl:lwjgl-openal:$lwjglVersion"
+        implementation "org.lwjgl:lwjgl-opengl:$lwjglVersion"
+        implementation "org.lwjgl:lwjgl-stb:$lwjglVersion"
+        implementation "org.lwjgl:lwjgl:$lwjglVersion:$lwjglNatives"
+        implementation "org.lwjgl:lwjgl-glfw:$lwjglVersion:$lwjglNatives"
+        implementation "org.lwjgl:lwjgl-openal:$lwjglVersion:$lwjglNatives"
+        implementation "org.lwjgl:lwjgl-opengl:$lwjglVersion:$lwjglNatives"
+        implementation "org.lwjgl:lwjgl-stb:$lwjglVersion:$lwjglNatives"
+        implementation "org.greenrobot:eventbus-java:3.3.1"
+        implementation "org.joml:joml:1.9.2"
+    }
+}
