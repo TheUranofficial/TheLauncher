@@ -39,10 +39,7 @@ public class UIScreen implements IEngine, IFileDropListener {
         this.hud = new UIHUD(this);
     }
 
-    public void reload(World world) {
-        if (this.dashboard != null)
-            this.dashboard.reloadWorld(world);
-
+    public void reload() {
         if (!TheLauncherSettings.firstRun.get()) {
             String id = this.getLanguageCode();
 

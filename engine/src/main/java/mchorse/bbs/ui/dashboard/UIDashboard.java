@@ -81,12 +81,6 @@ public class UIDashboard extends UIBaseMenu {
     public UIDashboard(IBridge bridge) {
         super(bridge);
 
-        World world = bridge.get(IBridgeWorld.class).getWorld();
-
-        this.orbitUI.setControl(true);
-        this.orbit.position.set(world.settings.cameraPosition);
-        this.orbit.rotation.set(world.settings.cameraRotation);
-
         /* Setup panels */
         this.panels = new UIDashboardPanels();
         this.panels.getEvents().register(UIDashboardPanels.PanelEvent.class, (e) ->
@@ -107,18 +101,6 @@ public class UIDashboard extends UIBaseMenu {
             UIOverlay.addOverlayRight(this.context, this.settingsPanel, 240);
         });
         this.settings.tooltip(UIKeys.CONFIG_TITLE, Direction.TOP);
-        this.worlds = new UIIcon(Icons.GLOBE, (b) ->
-        {
-            UIOverlay.addOverlay(this.context, new UIWorldsOverlayPanel(this.bridge));
-        });
-        this.worlds.tooltip(UIKeys.WORLD_WORLDS, Direction.TOP);
-        this.worldSettings = new UIIcon(Icons.GEAR, (b) ->
-        {
-            UIWorldSettingsOverlayPanel settings = new UIWorldSettingsOverlayPanel(this.bridge.get(IBridgeWorld.class).getWorld().settings);
-            UIOverlay overlay = UIOverlay.addOverlayRight(this.context, settings, 200);
-
-            overlay.noBackground();
-        });
 
         this.panels.pinned.add(this.settings, this.worlds, this.worldSettings);
         this.getRoot().prepend(this.orbitUI);
@@ -240,16 +222,9 @@ public class UIDashboard extends UIBaseMenu {
     }
 
     protected void registerPanels() {
-        this.panels.registerPanel(new UIWorldEditorPanel(this), UIKeys.WORLD_WORLD_EDITOR, Icons.BLOCK).marginLeft(10);
-        this.panels.registerPanel(new UIWorldObjectsPanel(this), UIKeys.WORLD_OBJECT_EDITOR, Icons.SPHERE);
-        this.panels.registerPanel(new UIEntitiesPanel(this), UIKeys.WORLD_ENTITY_EDITOR, Icons.POSE);
-        this.panels.registerPanel(new UITileSetEditorPanel(this), UIKeys.TILE_SET_TITLE, Icons.STAIR);
-
-        this.panels.registerPanel(new UIFontPanel(this), UIKeys.FONT_EDITOR_TITLE, Icons.FONT).marginLeft(10);
+        this.panels.registerPanel(new UIFontPanel(this), UIKeys.FONT_EDITOR_TITLE, Icons.FONT);
         this.panels.registerPanel(new UITextureManagerPanel(this), UIKeys.TEXTURES_TOOLTIP, Icons.MATERIAL);
         this.panels.registerPanel(new UIGraphPanel(this), UIKeys.GRAPH_TOOLTIP, Icons.GRAPH);
-
-        this.setPanel(this.getPanel(UIWorldEditorPanel.class));
     }
 
     public <T> T getPanel(Class<T> clazz) {

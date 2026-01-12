@@ -1,5 +1,6 @@
 package com.theuran.launcher;
 
+import mchorse.bbs.bridge.IBridgeWorld;
 import mchorse.bbs.data.types.MapType;
 import mchorse.bbs.graphics.window.Window;
 import mchorse.bbs.resources.Link;
@@ -122,6 +123,8 @@ public class TheLauncher {
 
             PROFILER.endBegin("init_engine");
             engine.init();
+            PROFILER.endBegin("load_dashboard");
+            engine.screen.reload();
             PROFILER.end();
             PROFILER.print();
             engine.start(id);

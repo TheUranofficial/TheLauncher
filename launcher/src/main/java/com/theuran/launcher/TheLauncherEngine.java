@@ -1,5 +1,6 @@
 package com.theuran.launcher;
 
+import com.theuran.launcher.bridge.BridgeCamera;
 import com.theuran.launcher.bridge.BridgeMenu;
 import com.theuran.launcher.settings.TheLauncherSettings;
 import com.theuran.launcher.ui.UIKeysApp;
@@ -11,7 +12,9 @@ import mchorse.bbs.BBS;
 import mchorse.bbs.BBSData;
 import mchorse.bbs.BBSSettings;
 import mchorse.bbs.bridge.IBridge;
+import mchorse.bbs.bridge.IBridgeCamera;
 import mchorse.bbs.bridge.IBridgeMenu;
+import mchorse.bbs.camera.controller.CameraController;
 import mchorse.bbs.core.Engine;
 import mchorse.bbs.core.keybinds.Keybind;
 import mchorse.bbs.core.keybinds.KeybindCategory;
@@ -29,7 +32,6 @@ import mchorse.bbs.resources.packs.InternalAssetsSourcePack;
 import mchorse.bbs.settings.values.ValueLanguage;
 import mchorse.bbs.ui.framework.UIBaseMenu;
 import mchorse.bbs.ui.framework.elements.overlay.UIOverlay;
-import mchorse.bbs.ui.framework.elements.overlay.UIOverlayPanel;
 import mchorse.bbs.ui.utils.icons.Icons;
 import mchorse.bbs.utils.IOUtils;
 import mchorse.bbs.utils.recording.ScreenshotRecorder;
@@ -45,6 +47,8 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
     public TheLauncherRenderer renderer;
     public UIScreen screen;
 
+    public CameraController cameraController = new CameraController();
+
     public ScreenshotRecorder screenshot;
 
     private Map<Class<?>, Object> apis = new HashMap<>();
@@ -53,6 +57,7 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
         super();
 
         this.apis.put(IBridgeMenu.class, new BridgeMenu(this));
+        this.apis.put(IBridgeCamera.class, new BridgeCamera(this));
 
         BBS.events.register(this);
 
@@ -62,6 +67,7 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
 
         this.screen = new UIScreen(this);
         this.renderer = new TheLauncherRenderer(this);
+        this.cameraController.camera.position.set(0, 0.5, 0);
 
         this.registerMiscellaneous();
         this.registerKeybinds();
@@ -189,6 +195,8 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
 
         float worldTransition = this.screen.isPaused() ? 0 : transition;
 
+        this.cameraController.setup(this.cameraController.camera, worldTransition);
+
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
         this.renderer.render(worldTransition);
@@ -201,8 +209,13 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
     public void update() {
         super.update();
 
+        if (!this.screen.isPaused()) {
+            this.cameraController.tick();
+        }
+
         this.renderer.update();
         this.screen.update();
+        this.cameraController.updateSoundPosition();
 
         BBS.events.post(new UpdateEvent());
     }
@@ -211,6 +224,7 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
     public void resize(int width, int height) {
         GLStates.resetViewport();
 
+        this.cameraController.resize(width, height);
         this.screen.resize(width, height);
     }
 
