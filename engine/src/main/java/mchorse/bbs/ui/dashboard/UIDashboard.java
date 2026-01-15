@@ -96,8 +96,8 @@ public class UIDashboard extends UIBaseMenu {
 
         this.settingsPanel = new UISettingsOverlayPanel();
 
-        this.settings = new UIIcon(Icons.SETTINGS, (b) ->
-        {
+        this.settings = new UIIcon(Icons.SETTINGS, (b) -> {
+            this.settingsPanel.refresh();
             UIOverlay.addOverlayRight(this.context, this.settingsPanel, 240);
         });
         this.settings.tooltip(UIKeys.CONFIG_TITLE, Direction.TOP);
@@ -291,12 +291,7 @@ public class UIDashboard extends UIBaseMenu {
             return;
         }
 
-        if (this.panels.panel != null && this.panels.panel.needsBackground()) {
-            this.background(context);
-        } else {
-            context.batcher.gradientVBox(0, 0, this.width, this.height / 8, Colors.A25, 0);
-            context.batcher.gradientVBox(0, this.height - this.height / 8, this.width, this.height, 0, Colors.A25);
-        }
+        this.background(context);
     }
 
     private void background(UIRenderingContext context) {

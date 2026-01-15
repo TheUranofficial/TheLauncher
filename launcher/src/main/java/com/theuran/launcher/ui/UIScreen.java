@@ -2,6 +2,7 @@ package com.theuran.launcher.ui;
 
 import com.theuran.launcher.TheLauncherEngine;
 import com.theuran.launcher.settings.TheLauncherSettings;
+import com.theuran.launcher.ui.welcome.UIWelcomeMenu;
 import mchorse.bbs.BBS;
 import mchorse.bbs.BBSSettings;
 import mchorse.bbs.core.IEngine;
@@ -16,7 +17,6 @@ import mchorse.bbs.ui.dashboard.UIDashboard;
 import mchorse.bbs.ui.framework.UIBaseMenu;
 import mchorse.bbs.ui.framework.UIRenderingContext;
 import mchorse.bbs.utils.joml.Matrices;
-import mchorse.bbs.world.World;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Locale;
@@ -40,14 +40,17 @@ public class UIScreen implements IEngine, IFileDropListener {
     }
 
     public void reload() {
-        if (!TheLauncherSettings.firstRun.get()) {
+        if (TheLauncherSettings.welcome.get()) {
+            this.showMenu(this.getDashboard());
+        } else {
             String id = this.getLanguageCode();
 
-            if (!BBSSettings.language.get().equals(id))
+            if (!BBSSettings.language.get().equals(id)) {
                 BBSSettings.language.set(id);
-        }
+            }
 
-        this.showMenu(this.getDashboard());
+            this.showMenu(new UIWelcomeMenu(this.engine));
+        }
     }
 
     private String getLanguageCode() {
@@ -82,8 +85,10 @@ public class UIScreen implements IEngine, IFileDropListener {
     }
 
     public UIDashboard getDashboard() {
-        if (this.dashboard == null)
+        if (this.dashboard == null) {
             this.dashboard = new UIDashboard(this.engine);
+            this.dashboard.main.keys().register(KeysApp.WELCOME, () -> this.showMenu(new UIWelcomeMenu(this.engine)));
+        }
 
         return this.dashboard;
     }

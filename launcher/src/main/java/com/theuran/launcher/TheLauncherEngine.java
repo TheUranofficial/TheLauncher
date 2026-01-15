@@ -2,7 +2,9 @@ package com.theuran.launcher;
 
 import com.theuran.launcher.bridge.BridgeCamera;
 import com.theuran.launcher.bridge.BridgeMenu;
+import com.theuran.launcher.bridge.BridgeVideoRecorder;
 import com.theuran.launcher.settings.TheLauncherSettings;
+import com.theuran.launcher.ui.KeysApp;
 import com.theuran.launcher.ui.UIKeysApp;
 import com.theuran.launcher.ui.UIScreen;
 import com.theuran.launcher.ui.l10n.UILanguageEditorOverlayPanel;
@@ -14,6 +16,7 @@ import mchorse.bbs.BBSSettings;
 import mchorse.bbs.bridge.IBridge;
 import mchorse.bbs.bridge.IBridgeCamera;
 import mchorse.bbs.bridge.IBridgeMenu;
+import mchorse.bbs.bridge.IBridgeVideoScreenshot;
 import mchorse.bbs.camera.controller.CameraController;
 import mchorse.bbs.core.Engine;
 import mchorse.bbs.core.keybinds.Keybind;
@@ -21,6 +24,7 @@ import mchorse.bbs.core.keybinds.KeybindCategory;
 import mchorse.bbs.data.DataToString;
 import mchorse.bbs.events.L10nReloadEvent;
 import mchorse.bbs.events.UpdateEvent;
+import mchorse.bbs.events.register.RegisterKeybindsClassesEvent;
 import mchorse.bbs.events.register.RegisterL10nEvent;
 import mchorse.bbs.events.register.RegisterSettingsEvent;
 import mchorse.bbs.graphics.GLStates;
@@ -35,6 +39,7 @@ import mchorse.bbs.ui.framework.elements.overlay.UIOverlay;
 import mchorse.bbs.ui.utils.icons.Icons;
 import mchorse.bbs.utils.IOUtils;
 import mchorse.bbs.utils.recording.ScreenshotRecorder;
+import mchorse.bbs.utils.recording.VideoRecorder;
 import org.greenrobot.eventbus.Subscribe;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -49,6 +54,8 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
 
     public CameraController cameraController = new CameraController();
 
+    /* Utility */
+    public VideoRecorder video;
     public ScreenshotRecorder screenshot;
 
     private Map<Class<?>, Object> apis = new HashMap<>();
@@ -58,6 +65,7 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
 
         this.apis.put(IBridgeMenu.class, new BridgeMenu(this));
         this.apis.put(IBridgeCamera.class, new BridgeCamera(this));
+        this.apis.put(IBridgeVideoScreenshot.class, new BridgeVideoRecorder(this));
 
         BBS.events.register(this);
 
@@ -101,6 +109,11 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
         }
     }
 
+    @Subscribe
+    public void registerKeybindsClasses(RegisterKeybindsClassesEvent event) {
+        event.register(KeysApp.class);
+    }
+
     private void overwriteLanguage(L10n l10n, File file) {
         try {
             l10n.overwrite(DataToString.mapFromString(IOUtils.readText(file)));
@@ -116,6 +129,7 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
     private void registerMiscellaneous() {
         BBS.getProvider().register(new InternalAssetsSourcePack("launcher", TheLauncherEngine.class));
 
+        this.video = new VideoRecorder(BBS.getGamePath("movies"), this);
         this.screenshot = new ScreenshotRecorder(BBS.getGamePath("screenshots"), this);
 
         Window.registerFileDropListener(this);
@@ -202,6 +216,7 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
         this.renderer.render(worldTransition);
         this.screen.render(transition);
 
+        this.video.recordFrame();
         this.screenshot.recordFrame(Window.width, Window.height);
     }
 
@@ -223,6 +238,10 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
     @Override
     public void resize(int width, int height) {
         GLStates.resetViewport();
+
+        if (this.video.isRecording()) {
+            this.video.stopRecording();
+        }
 
         this.cameraController.resize(width, height);
         this.screen.resize(width, height);

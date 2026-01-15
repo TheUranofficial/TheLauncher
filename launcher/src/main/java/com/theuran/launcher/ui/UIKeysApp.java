@@ -38,4 +38,23 @@ public class UIKeysApp {
     public static final IKey LANGUAGE_EDITOR_COPY = IKey.lang("launcher.ui.language.editor.copy");
     public static final IKey LANGUAGE_EDITOR_PASTE = IKey.lang("launcher.ui.language.editor.paste");
     public static final IKey LANGUAGE_EDITOR_PASTE_DESCRIPTION = IKey.lang("launcher.ui.language.editor.paste-description");
+
+    /* Welcome UI menu */
+    public static final IKey WELCOME_WELCOME_TITLE = IKey.lang("launcher.ui.welcome.welcome-title");
+    public static final IKey WELCOME_WELCOME_SUBTITLE = IKey.lang("launcher.ui.welcome.welcome-subtitle");
+    public static final IKey WELCOME_TITLE = IKey.lang("launcher.ui.keys.welcome");
+    public static final IKey WELCOME_KEYS_BACKSLASH = IKey.lang("launcher.ui.welcome.main_keys.backslash");
+    public static final IKey WELCOME_KEYS_F1 = IKey.lang("launcher.ui.welcome.main_keys.f1");
+    public static final IKey WELCOME_KEYS_F11 = IKey.lang("launcher.ui.welcome.main_keys.f11");
+    public static final IKey WELCOME_KEYS_F2 = IKey.lang("launcher.ui.welcome.main_keys.f2");
+    public static final IKey WELCOME_KEYS_F3 = IKey.lang("launcher.ui.welcome.main_keys.f3");
+    public static final IKey WELCOME_KEYS_F6 = IKey.lang("launcher.ui.welcome.main_keys.f6");
+    public static final IKey WELCOME_KEYS_F9 = IKey.lang("launcher.ui.welcome.main_keys.f9");
+    public static final IKey WELCOME_KEYS_PREV = IKey.lang("launcher.ui.welcome.keys.prev_page");
+    public static final IKey WELCOME_KEYS_NEXT = IKey.lang("launcher.ui.welcome.keys.next_page");
+    public static final IKey WELCOME_SECTIONS_KEYS = IKey.lang("launcher.ui.welcome.sections.keys");
+    public static final IKey WELCOME_KEYS_SUBTITLE = IKey.lang("launcher.ui.welcome.keys-subtitle");
+    public static final IKey WELCOME_SECTIONS_INPUT_DATA = IKey.lang("launcher.ui.welcome.sections.input_data");
+    public static final IKey WELCOME_INPUT_DATA_SUBTITLE = IKey.lang("launcher.ui.welcome.input_data-subtitle");
+    public static final IKey WELCOME_INPUT_DATA_NOTIFICATION = IKey.lang("launcher.ui.welcome.input_data-notification");
 }
