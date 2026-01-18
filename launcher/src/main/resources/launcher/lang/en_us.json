@@ -58,5 +58,7 @@
   "launcher.ui.welcome.input_data-subtitle": "Please enter all needing data in the fields.",
   "launcher.ui.welcome.input_data-notification": "Enter all needing data!",
   "launcher.ui.welcome.sections.keys": "Main keybinds",
-  "launcher.ui.welcome.keys-subtitle": "Hover over the keys to see what they are doing..."
+  "launcher.ui.welcome.keys-subtitle": "Hover over the keys to see what they are doing...",
+  "launcher.ui.gamemode.title": "Gamemodes",
+  "launcher.ui.gamemode.play": "Play"
 }

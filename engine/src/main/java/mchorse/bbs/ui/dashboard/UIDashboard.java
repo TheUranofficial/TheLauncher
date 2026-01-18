@@ -88,9 +88,10 @@ public class UIDashboard extends UIBaseMenu {
             this.orbitUI.setControl(this.panels.isFlightSupported());
         });
         this.panels.relative(this.viewport).full();
-        this.registerPanels();
 
         BBS.events.post(new RegisterDashboardPanels(this));
+
+        this.registerPanels();
 
         this.main.add(this.panels);
 
@@ -222,7 +223,7 @@ public class UIDashboard extends UIBaseMenu {
     }
 
     protected void registerPanels() {
-        this.panels.registerPanel(new UIFontPanel(this), UIKeys.FONT_EDITOR_TITLE, Icons.FONT);
+        this.panels.registerPanel(new UIFontPanel(this), UIKeys.FONT_EDITOR_TITLE, Icons.FONT).marginLeft(10);
         this.panels.registerPanel(new UITextureManagerPanel(this), UIKeys.TEXTURES_TOOLTIP, Icons.MATERIAL);
         this.panels.registerPanel(new UIGraphPanel(this), UIKeys.GRAPH_TOOLTIP, Icons.GRAPH);
     }

@@ -57,4 +57,8 @@ public class UIKeysApp {
     public static final IKey WELCOME_SECTIONS_INPUT_DATA = IKey.lang("launcher.ui.welcome.sections.input_data");
     public static final IKey WELCOME_INPUT_DATA_SUBTITLE = IKey.lang("launcher.ui.welcome.input_data-subtitle");
     public static final IKey WELCOME_INPUT_DATA_NOTIFICATION = IKey.lang("launcher.ui.welcome.input_data-notification");
+
+    /* GameModes UI dashboard panel */
+    public static final IKey GAMEMODE_TITLE = IKey.lang("launcher.ui.gamemode.title");
+    public static final IKey GAMEMODE_PLAY = IKey.lang("launcher.ui.gamemode.play");
 }

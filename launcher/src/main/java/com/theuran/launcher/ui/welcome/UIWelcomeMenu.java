@@ -102,7 +102,7 @@ public class UIWelcomeMenu extends UIBaseMenu {
         this.port = new UITrackpad(number -> TheLauncherSettings.serverPort.set(number.intValue()));
         this.port.tooltip(IKey.lang("launcher.config.server.server_port-comment"));
         this.port.limit(0, 65535).setValue(TheLauncherSettings.serverPort.get());
-        this.inputData = UI.column(UI.row(new UIIcon(Icons.POSE, null), this.playerName), UI.row(new UIIcon(Icons.SERVER, null), this.serverIp), UI.row(new UIIcon(Icons.REVERSE, null), this.port));
+        this.inputData = UI.column(UI.row(new UIIcon(Icons.JOYSTICK, null), this.playerName), UI.row(new UIIcon(Icons.GLOBE, null), this.serverIp), UI.row(new UIIcon(Icons.SETTINGS, null), this.port));
         this.inputData.relative(this.main).xy(0.5f, 0.5f).wh(300, 212).anchor(0.5f);
 
         this.main.add(this.title, this.previous, this.next);

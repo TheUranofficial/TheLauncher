@@ -7,11 +7,11 @@ import com.theuran.launcher.settings.TheLauncherSettings;
 import com.theuran.launcher.ui.KeysApp;
 import com.theuran.launcher.ui.UIKeysApp;
 import com.theuran.launcher.ui.UIScreen;
+import com.theuran.launcher.ui.gamemode.UIGameModePanel;
 import com.theuran.launcher.ui.l10n.UILanguageEditorOverlayPanel;
 import com.theuran.launcher.ui.utility.UIUtilityMenu;
 import com.theuran.launcher.ui.utility.UIUtilityOverlayPanel;
 import mchorse.bbs.BBS;
-import mchorse.bbs.BBSData;
 import mchorse.bbs.BBSSettings;
 import mchorse.bbs.bridge.IBridge;
 import mchorse.bbs.bridge.IBridgeCamera;
@@ -24,6 +24,7 @@ import mchorse.bbs.core.keybinds.KeybindCategory;
 import mchorse.bbs.data.DataToString;
 import mchorse.bbs.events.L10nReloadEvent;
 import mchorse.bbs.events.UpdateEvent;
+import mchorse.bbs.events.register.RegisterDashboardPanels;
 import mchorse.bbs.events.register.RegisterKeybindsClassesEvent;
 import mchorse.bbs.events.register.RegisterL10nEvent;
 import mchorse.bbs.events.register.RegisterSettingsEvent;
@@ -114,6 +115,12 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
         event.register(KeysApp.class);
     }
 
+    @Subscribe
+    public void registerDashboardPanels(RegisterDashboardPanels event) {
+        event.dashboard.getPanels().registerPanel(new UIGameModePanel(event.dashboard), UIKeysApp.GAMEMODE_TITLE, Icons.FILE);
+        event.dashboard.setPanel(event.dashboard.getPanel(UIGameModePanel.class));
+    }
+
     private void overwriteLanguage(L10n l10n, File file) {
         try {
             l10n.overwrite(DataToString.mapFromString(IOUtils.readText(file)));
@@ -170,8 +177,8 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
 
         TheLauncher.PROFILER.endBegin("init_bbs");
         BBS.initialize();
-        TheLauncher.PROFILER.endBegin("init_bbs_data");
-        BBSData.load(BBS.getDataFolder(), this);
+        TheLauncher.PROFILER.endBegin("init_launcher_data");
+        TheLauncherData.load(BBS.getDataFolder(), this);
 
         TheLauncher.PROFILER.endBegin("init_renderer");
         this.renderer.init();
@@ -199,7 +206,7 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
 
         this.screen.delete();
 
-        BBSData.delete();
+        TheLauncherData.delete();
         BBS.terminate();
     }
 

@@ -9,7 +9,10 @@ import mchorse.bbs.network.codec.PacketDecoder;
 import mchorse.bbs.network.codec.PacketEncoder;
 import mchorse.bbs.network.utils.ChannelHandler;
 import mchorse.bbs.network.utils.Encryption;
+import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.utils.SideOnly;
 
+@SideOnly(Side.SERVER)
 public class ServerChannel extends ChannelInitializer<SocketChannel> {
     private AbstractDispatcher dispatcher;
     private String encryptionKey;

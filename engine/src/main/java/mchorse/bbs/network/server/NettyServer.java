@@ -7,7 +7,10 @@ import io.netty.channel.nio.NioIoHandler;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import mchorse.bbs.network.AbstractDispatcher;
 import mchorse.bbs.network.utils.ChannelHandler;
+import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.utils.SideOnly;
 
+@SideOnly(Side.SERVER)
 public class NettyServer {
     private MultiThreadIoEventLoopGroup bossGroup;
     private MultiThreadIoEventLoopGroup workerGroup;

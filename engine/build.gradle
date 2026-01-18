@@ -4,3 +4,119 @@ version = "0.1"
 compileJava {
     archivesBaseName = "bbs-engine"
 }
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.ow2.asm:asm:$asm"
+        classpath "org.ow2.asm:asm-tree:$asm"
+    }
+}
+
+import org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.AnnotationNode
+import org.objectweb.asm.*
+
+static boolean hasSideOnly(List<AnnotationNode> annotations, String targetSide, String desc) {
+    if (annotations == null) {
+        return false
+    }
+
+    for (AnnotationNode ann : annotations) {
+        if (ann.desc == desc) {
+            if (ann.values != null) {
+                for (int i = 0; i < ann.values.size(); i += 2) {
+                    if (ann.values[i] == "value") {
+                        Object value = ann.values[i + 1]
+
+                        if (value instanceof String[]) {
+                            String sideValue = ((String[]) value)[1]
+
+                            return sideValue != targetSide
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false
+}
+
+static def transformClasses(String side, File inputDir, File outputDir) {
+    if (!inputDir.exists()) {
+        return
+    }
+
+    inputDir.eachFileRecurse { file ->
+        def relativePath = inputDir.toPath().relativize(file.toPath()).toString()
+        def outFile = new File(outputDir, relativePath)
+
+        if (file.name.endsWith(".class")) {
+            byte[] bytes = file.bytes
+            def reader = new ClassReader(bytes)
+            def node = new ClassNode()
+            def sideOnlyDescriptor = "Lmchorse/bbs/network/utils/SideOnly;"
+
+            reader.accept(node, 0)
+
+            if (hasSideOnly(node.visibleAnnotations, side, sideOnlyDescriptor) ||
+                    hasSideOnly(node.invisibleAnnotations, side, sideOnlyDescriptor)) {
+                return
+            }
+
+            node.methods.removeIf { mn ->
+                boolean remove = hasSideOnly(mn.visibleAnnotations, side, sideOnlyDescriptor) ||
+                        hasSideOnly(mn.invisibleAnnotations, side, sideOnlyDescriptor)
+
+                return remove
+            }
+
+            node.fields.removeIf { fn ->
+                boolean remove = hasSideOnly(fn.visibleAnnotations, side, sideOnlyDescriptor) ||
+                        hasSideOnly(fn.invisibleAnnotations, side, sideOnlyDescriptor)
+
+                return remove
+            }
+
+            def writer = new ClassWriter(0)
+
+            node.accept(writer)
+            outFile.parentFile.mkdirs()
+            outFile.bytes = writer.toByteArray()
+        }
+    }
+}
+
+tasks.register("prepareClient", Sync) {
+    dependsOn classes
+    from sourceSets.main.output.resourcesDir
+    into "$buildDir/client-output"
+
+    doLast {
+        transformClasses("CLIENT", sourceSets.main.output.classesDirs.singleFile, file("$buildDir/client-output"))
+    }
+}
+
+tasks.register("clientJar", Jar) {
+    dependsOn prepareClient
+    archiveClassifier = "client"
+    from "$buildDir/client-output"
+}
+
+tasks.register("prepareServer", Sync) {
+    dependsOn classes
+    from sourceSets.main.output.resourcesDir
+    into "$buildDir/server-output"
+
+    doLast {
+        transformClasses("SERVER", sourceSets.main.output.classesDirs.singleFile, file("$buildDir/server-output"))
+    }
+}
+
+tasks.register("serverJar", Jar) {
+    dependsOn prepareServer
+    archiveClassifier = "server"
+    from "$buildDir/server-output"
+}

@@ -1,6 +1,5 @@
 package com.theuran.launcher;
 
-import mchorse.bbs.bridge.IBridgeWorld;
 import mchorse.bbs.data.types.MapType;
 import mchorse.bbs.graphics.window.Window;
 import mchorse.bbs.resources.Link;
