@@ -15,7 +15,7 @@ public class Launcher {
         defaultSettings.putInt("game.height", 720);
         defaultSettings.putString("game.directory", "game");
 
-        List<String> args = launcher.getArguments("com.theuran.app.App");
+        List<String> args = launcher.getArguments("com.theuran.launcher.TheLauncher");
         MapType settings = launcher.readSettings(new File("launcher.json"), defaultSettings);
 
         String gameDirectory = settings.getString("game.directory");

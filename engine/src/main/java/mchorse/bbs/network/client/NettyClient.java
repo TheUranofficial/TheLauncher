@@ -43,4 +43,8 @@ public class NettyClient {
         bootstrap.connect(host, port).syncUninterruptibly();
         System.out.println("Connected to " + host + ":" + port);
     }
+
+    public void delete() {
+        this.workerGroup.shutdownGracefully();
+    }
 }

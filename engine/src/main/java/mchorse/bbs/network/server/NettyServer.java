@@ -59,4 +59,9 @@ public class NettyServer {
             return key.substring(0, 2) + "****" + key.substring(key.length() - 2);
         }
     }
+
+    public void delete() {
+        this.bossGroup.shutdownGracefully();
+        this.workerGroup.shutdownGracefully();
+    }
 }

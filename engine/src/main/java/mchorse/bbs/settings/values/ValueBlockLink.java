@@ -3,6 +3,8 @@ package mchorse.bbs.settings.values;
 import mchorse.bbs.bridge.IBridgeWorld;
 import mchorse.bbs.data.types.BaseType;
 import mchorse.bbs.data.types.StringType;
+import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.utils.SideOnly;
 import mchorse.bbs.settings.ui.UIValueFactory;
 import mchorse.bbs.settings.values.base.BaseValueBasic;
 import mchorse.bbs.settings.values.base.IValueUIProvider;
@@ -25,6 +27,7 @@ public class ValueBlockLink extends BaseValueBasic<BlockLink> implements IValueU
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public List<UIElement> getFields(UIElement ui) {
         IBlockVariant value = this.get(ui.getContext().menu.bridge.get(IBridgeWorld.class).getWorld().chunks.builder.models);
 

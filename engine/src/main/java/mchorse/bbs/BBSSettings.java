@@ -1,5 +1,7 @@
 package mchorse.bbs;
 
+import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.utils.SideOnly;
 import mchorse.bbs.settings.SettingsBuilder;
 import mchorse.bbs.settings.values.ValueBoolean;
 import mchorse.bbs.settings.values.ValueColors;
@@ -12,6 +14,7 @@ import mchorse.bbs.ui.UIKeys;
 import mchorse.bbs.utils.colors.Colors;
 import mchorse.bbs.utils.math.MathUtils;
 
+@SideOnly(Side.CLIENT)
 public class BBSSettings {
     public static ValueColors favoriteColors;
     public static ValueLanguage language;

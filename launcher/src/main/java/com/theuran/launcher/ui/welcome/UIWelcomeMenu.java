@@ -94,7 +94,7 @@ public class UIWelcomeMenu extends UIBaseMenu {
 
         /* Input data */
         this.playerName = new UITextbox(TheLauncherSettings.playerName::set);
-        this.playerName.tooltip(IKey.lang("launcher.config.server.player_name-comment"));
+        this.playerName.tooltip(IKey.lang("launcher.config.client.player_name-comment"));
         this.playerName.setText(TheLauncherSettings.playerName.get());
         this.serverIp = new UITextbox(TheLauncherSettings.serverIp::set);
         this.serverIp.tooltip(IKey.lang("launcher.config.server.server_ip-comment"));

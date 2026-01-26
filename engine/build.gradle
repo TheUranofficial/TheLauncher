@@ -15,6 +15,7 @@ buildscript {
     }
 }
 
+/* AI pure code */
 import org.objectweb.asm.tree.ClassNode
 import org.objectweb.asm.tree.AnnotationNode
 import org.objectweb.asm.*
@@ -49,15 +50,39 @@ static def transformClasses(String side, File inputDir, File outputDir) {
         return
     }
 
+    def bannedPackages = [] as Set
+    def sideOnlyDescriptor = "Lmchorse/bbs/network/utils/SideOnly;"
+
     inputDir.eachFileRecurse { file ->
-        def relativePath = inputDir.toPath().relativize(file.toPath()).toString()
+        if (file.name == "package-info.class") {
+            byte[] bytes = file.bytes
+            def reader = new ClassReader(bytes)
+            def node = new ClassNode()
+
+            reader.accept(node, 0)
+
+            if (hasSideOnly(node.visibleAnnotations, side, sideOnlyDescriptor) ||
+                    hasSideOnly(node.invisibleAnnotations, side, sideOnlyDescriptor)) {
+
+                def packagePath = inputDir.toPath().relativize(file.parentFile.toPath()).toString().replace("\\", "/")
+
+                bannedPackages.add(packagePath + "/")
+            }
+        }
+    }
+
+    inputDir.eachFileRecurse { file ->
+        def relativePath = inputDir.toPath().relativize(file.toPath()).toString().replace("\\", "/")
         def outFile = new File(outputDir, relativePath)
+
+        if (bannedPackages.any { relativePath.startsWith(it as String) }) {
+            return
+        }
 
         if (file.name.endsWith(".class")) {
             byte[] bytes = file.bytes
             def reader = new ClassReader(bytes)
             def node = new ClassNode()
-            def sideOnlyDescriptor = "Lmchorse/bbs/network/utils/SideOnly;"
 
             reader.accept(node, 0)
 
@@ -67,22 +92,19 @@ static def transformClasses(String side, File inputDir, File outputDir) {
             }
 
             node.methods.removeIf { mn ->
-                boolean remove = hasSideOnly(mn.visibleAnnotations, side, sideOnlyDescriptor) ||
+                hasSideOnly(mn.visibleAnnotations, side, sideOnlyDescriptor) ||
                         hasSideOnly(mn.invisibleAnnotations, side, sideOnlyDescriptor)
-
-                return remove
             }
 
             node.fields.removeIf { fn ->
-                boolean remove = hasSideOnly(fn.visibleAnnotations, side, sideOnlyDescriptor) ||
+                hasSideOnly(fn.visibleAnnotations, side, sideOnlyDescriptor) ||
                         hasSideOnly(fn.invisibleAnnotations, side, sideOnlyDescriptor)
-
-                return remove
             }
 
             def writer = new ClassWriter(0)
 
             node.accept(writer)
+
             outFile.parentFile.mkdirs()
             outFile.bytes = writer.toByteArray()
         }
@@ -105,18 +127,34 @@ tasks.register("clientJar", Jar) {
     from "$buildDir/client-output"
 }
 
-tasks.register("prepareServer", Sync) {
-    dependsOn classes
-    from sourceSets.main.output.resourcesDir
-    into "$buildDir/server-output"
+tasks.register("transformServerClasses") {
+    dependsOn "classes"
+
+    def inputDirs = sourceSets.main.output.classesDirs
+    def outputDir = file("$buildDir/transformed-server")
+
+    inputs.files(inputDirs)
+    outputs.dir(outputDir)
 
     doLast {
-        transformClasses("SERVER", sourceSets.main.output.classesDirs.singleFile, file("$buildDir/server-output"))
+        outputDir.deleteDir()
+        outputDir.mkdirs()
+
+        inputDirs.each { dir ->
+            if (dir.exists()) {
+                transformClasses("SERVER", dir, outputDir)
+            }
+        }
     }
 }
 
 tasks.register("serverJar", Jar) {
-    dependsOn prepareServer
+    dependsOn "transformServerClasses"
     archiveClassifier = "server"
-    from "$buildDir/server-output"
+
+    from(sourceSets.main.output.resourcesDir) {
+        exclude "assets/**"
+    }
+
+    from file("$buildDir/transformed-server")
 }

@@ -4,43 +4,17 @@ import mchorse.bbs.BBSSettings;
 import mchorse.bbs.game.utils.ContentType;
 import mchorse.bbs.ui.UIKeys;
 import mchorse.bbs.ui.framework.UIContext;
-import mchorse.bbs.ui.framework.elements.overlay.UIOverlay;
-import mchorse.bbs.ui.framework.elements.overlay.UIStringOverlayPanel;
 import mchorse.bbs.ui.utils.renderers.InputRenderer;
 import mchorse.bbs.utils.colors.Colors;
 import mchorse.bbs.utils.math.Interpolation;
 import mchorse.bbs.utils.math.Interpolations;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Collection;
 import java.util.function.Consumer;
 
 public class UIDataUtils {
-    public static void requestNames(ContentType type, Consumer<List<String>> consumer) {
-        consumer.accept(new ArrayList<>(type.getManager().getKeys()));
-    }
-
-    public static void openPicker(UIContext context, ContentType type, String value, Consumer<String> callback) {
-        requestNames(type, (names) ->
-        {
-            clearEmptyFolders(names);
-
-            UIStringOverlayPanel overlay = new UIStringOverlayPanel(type.getPickLabel(), names, callback);
-
-            overlay.set(value);
-            UIOverlay.addOverlay(context, overlay, 0.5F, 0.7F);
-        });
-    }
-
-    private static void clearEmptyFolders(List<String> names) {
-        Iterator<String> it = names.iterator();
-
-        while (it.hasNext()) {
-            if (it.next().endsWith("/")) {
-                it.remove();
-            }
-        }
+    public static void requestNames(ContentType type, Consumer<Collection<String>> consumer) {
+        type.getRepository().requestKeys(consumer);
     }
 
     public static void renderRightClickHere(UIContext context, Area area) {

@@ -36,6 +36,8 @@ import mchorse.bbs.graphics.text.format.WaveFontFormat;
 import mchorse.bbs.graphics.texture.TextureManager;
 import mchorse.bbs.graphics.vao.VAOManager;
 import mchorse.bbs.l10n.L10n;
+import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.utils.SideOnly;
 import mchorse.bbs.resources.AssetProvider;
 import mchorse.bbs.resources.Link;
 import mchorse.bbs.resources.packs.ExternalAssetsSourcePack;
@@ -97,6 +99,7 @@ import java.util.function.Consumer;
 /**
  * BBS's global god object.
  */
+@SideOnly(Side.CLIENT)
 public class BBS {
     public static final EventBus events = EventBus.builder()
             .logNoSubscriberMessages(false)

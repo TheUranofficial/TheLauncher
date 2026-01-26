@@ -2,6 +2,8 @@ package mchorse.bbs.settings.values;
 
 import mchorse.bbs.data.types.BaseType;
 import mchorse.bbs.data.types.ListType;
+import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.utils.SideOnly;
 import mchorse.bbs.settings.values.base.BaseValueBasic;
 import mchorse.bbs.settings.values.base.IValueUIProvider;
 import mchorse.bbs.ui.framework.elements.UIElement;
@@ -26,6 +28,7 @@ public class ValueKeyCombo extends BaseValueBasic<KeyCombo> implements IValueUIP
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public List<UIElement> getFields(UIElement ui) {
         UILabel label = UI.label(this.value.label, 0).labelAnchor(0, 0.5F);
         UIKeybind keybind = new UIKeybind(this::set);

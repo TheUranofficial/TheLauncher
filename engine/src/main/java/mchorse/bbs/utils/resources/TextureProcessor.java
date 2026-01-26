@@ -1,12 +1,15 @@
 package mchorse.bbs.utils.resources;
 
 import mchorse.bbs.BBS;
+import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.utils.SideOnly;
 import mchorse.bbs.utils.colors.Color;
 import mchorse.bbs.utils.colors.Colors;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public class TextureProcessor {
     public static Pixels process(MultiLink multi) {
         List<Pixels> images = new ArrayList<>();

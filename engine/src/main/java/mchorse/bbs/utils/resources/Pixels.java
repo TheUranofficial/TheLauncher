@@ -2,6 +2,8 @@ package mchorse.bbs.utils.resources;
 
 import mchorse.bbs.core.IDisposable;
 import mchorse.bbs.graphics.texture.Texture;
+import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.utils.SideOnly;
 import mchorse.bbs.utils.IOUtils;
 import mchorse.bbs.utils.colors.Color;
 import mchorse.bbs.utils.colors.Colors;
@@ -15,6 +17,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
+@SideOnly(Side.CLIENT)
 public class Pixels implements IDisposable {
     private ByteBuffer buffer;
     public final int width;

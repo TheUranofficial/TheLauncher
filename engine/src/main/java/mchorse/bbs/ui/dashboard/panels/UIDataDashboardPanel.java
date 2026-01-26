@@ -7,14 +7,12 @@ import mchorse.bbs.ui.dashboard.UIDashboard;
 import mchorse.bbs.ui.dashboard.panels.overlay.UICRUDOverlayPanel;
 import mchorse.bbs.ui.dashboard.panels.overlay.UIDataOverlayPanel;
 import mchorse.bbs.ui.framework.UIContext;
-import mchorse.bbs.ui.framework.elements.UIScrollView;
 import mchorse.bbs.ui.framework.elements.buttons.UIIcon;
-import mchorse.bbs.ui.utils.UI;
 import mchorse.bbs.ui.utils.UIDataUtils;
 import mchorse.bbs.ui.utils.icons.Icons;
 import mchorse.bbs.utils.math.Interpolation;
 
-import java.util.List;
+import java.util.Collection;
 
 public abstract class UIDataDashboardPanel<T extends ValueGroup> extends UICRUDDashboardPanel {
     public UIIcon saveIcon;
@@ -53,7 +51,7 @@ public abstract class UIDataDashboardPanel<T extends ValueGroup> extends UICRUDD
     }
 
     public void requestData(String id) {
-        this.fill((T) this.getType().getManager().load(id));
+        this.getType().getRepository().load(id, (data) -> this.fill((T) data));
     }
 
     /* Data population */
@@ -66,24 +64,20 @@ public abstract class UIDataDashboardPanel<T extends ValueGroup> extends UICRUDD
         this.overlay.dupe.setEnabled(data != null);
         this.overlay.rename.setEnabled(data != null);
         this.overlay.remove.setEnabled(data != null);
+
+        this.fillData(data);
     }
+
+    protected abstract void fillData(T data);
 
     public void fillDefaultData(T data) {
     }
 
-    public void fillNames(List<String> names) {
+    public void fillNames(Collection<String> names) {
         String value = this.data == null ? null : this.data.getId();
 
         this.overlay.namesList.fill(names);
         this.overlay.namesList.setCurrentFile(value);
-    }
-
-    protected UIScrollView createScrollEditor() {
-        UIScrollView scrollEditor = UI.scrollView(5, 10);
-
-        scrollEditor.relative(this.editor).full();
-
-        return scrollEditor;
     }
 
     @Override
@@ -132,11 +126,7 @@ public abstract class UIDataDashboardPanel<T extends ValueGroup> extends UICRUDD
     }
 
     public void forceSave() {
-        this.preSave();
-        this.getType().getManager().save(this.data.getId(), this.data.toData().asMap());
-    }
-
-    protected void preSave() {
+        this.getType().getRepository().save(this.data.getId(), this.data.toData().asMap());
     }
 
     @Override

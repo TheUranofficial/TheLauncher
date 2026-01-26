@@ -3,6 +3,7 @@ package com.theuran.launcher;
 import com.theuran.launcher.bridge.BridgeCamera;
 import com.theuran.launcher.bridge.BridgeMenu;
 import com.theuran.launcher.bridge.BridgeVideoRecorder;
+import com.theuran.launcher.network.PacketHandler;
 import com.theuran.launcher.settings.TheLauncherSettings;
 import com.theuran.launcher.ui.KeysApp;
 import com.theuran.launcher.ui.UIKeysApp;
@@ -33,6 +34,9 @@ import mchorse.bbs.graphics.window.IFileDropListener;
 import mchorse.bbs.graphics.window.Window;
 import mchorse.bbs.l10n.L10n;
 import mchorse.bbs.l10n.L10nUtils;
+import mchorse.bbs.network.client.NettyClient;
+import mchorse.bbs.network.thelauncher.Dispatcher;
+import mchorse.bbs.network.utils.Side;
 import mchorse.bbs.resources.packs.InternalAssetsSourcePack;
 import mchorse.bbs.settings.values.ValueLanguage;
 import mchorse.bbs.ui.framework.UIBaseMenu;
@@ -58,6 +62,8 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
     /* Utility */
     public VideoRecorder video;
     public ScreenshotRecorder screenshot;
+
+    public NettyClient client;
 
     private Map<Class<?>, Object> apis = new HashMap<>();
 
@@ -189,6 +195,10 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
 
         TheLauncher.PROFILER.endBegin("init_callbacks");
         this.registerSettingsCallbacks();
+
+        TheLauncher.PROFILER.endBegin("init_netty_client");
+        this.client = new NettyClient(new Dispatcher(Side.CLIENT), PacketHandler.class, "mimi");
+        this.client.connect(TheLauncherSettings.serverIp.get(), TheLauncherSettings.serverPort.get());
     }
 
     private void registerSettingsCallbacks() {
@@ -205,6 +215,7 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
         super.delete();
 
         this.screen.delete();
+        this.client.delete();
 
         TheLauncherData.delete();
         BBS.terminate();

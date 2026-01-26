@@ -2,6 +2,8 @@ package mchorse.bbs.settings.values;
 
 import mchorse.bbs.data.types.BaseType;
 import mchorse.bbs.data.types.ByteType;
+import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.utils.SideOnly;
 import mchorse.bbs.settings.ui.UIValueFactory;
 import mchorse.bbs.settings.values.base.BaseValueBasic;
 import mchorse.bbs.settings.values.base.IValueUIProvider;
@@ -21,6 +23,7 @@ public class ValueBoolean extends BaseValueBasic<Boolean> implements IValueUIPro
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public List<UIElement> getFields(UIElement ui) {
         UIToggle toggle = UIValueFactory.booleanUI(this, null);
 

@@ -2,6 +2,8 @@ package mchorse.bbs.settings.values;
 
 import mchorse.bbs.data.types.BaseType;
 import mchorse.bbs.data.types.StringType;
+import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.utils.SideOnly;
 import mchorse.bbs.settings.ui.UIValueFactory;
 import mchorse.bbs.settings.values.base.BaseValueBasic;
 import mchorse.bbs.settings.values.base.IValueUIProvider;
@@ -17,6 +19,7 @@ public class ValueString extends BaseValueBasic<String> implements IValueUIProvi
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public List<UIElement> getFields(UIElement ui) {
         UITextbox textbox = UIValueFactory.stringUI(this, null);
 

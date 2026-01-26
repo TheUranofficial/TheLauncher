@@ -2,6 +2,8 @@ package mchorse.bbs.settings.values;
 
 import mchorse.bbs.BBS;
 import mchorse.bbs.l10n.L10n;
+import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.utils.SideOnly;
 import mchorse.bbs.settings.ui.UIValueFactory;
 import mchorse.bbs.ui.UIKeys;
 import mchorse.bbs.ui.framework.elements.UIElement;
@@ -27,6 +29,7 @@ public class ValueLanguage extends ValueString {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public List<UIElement> getFields(UIElement ui) {
         UIButton button = new UIButton(UIKeys.LANGUAGE_PICK, (b) ->
         {

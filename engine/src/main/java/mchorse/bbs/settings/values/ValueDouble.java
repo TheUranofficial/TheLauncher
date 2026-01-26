@@ -2,6 +2,8 @@ package mchorse.bbs.settings.values;
 
 import mchorse.bbs.data.types.BaseType;
 import mchorse.bbs.data.types.DoubleType;
+import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.utils.SideOnly;
 import mchorse.bbs.settings.ui.UIValueFactory;
 import mchorse.bbs.settings.values.base.BaseValueNumber;
 import mchorse.bbs.settings.values.base.IValueUIProvider;
@@ -27,6 +29,7 @@ public class ValueDouble extends BaseValueNumber<Double> implements IValueUIProv
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public List<UIElement> getFields(UIElement ui) {
         UITrackpad trackpad = UIValueFactory.doubleUI(this, null);
 

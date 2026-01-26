@@ -2,6 +2,8 @@ package mchorse.bbs.settings.values;
 
 import mchorse.bbs.data.types.BaseType;
 import mchorse.bbs.data.types.MapType;
+import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.utils.SideOnly;
 import mchorse.bbs.resources.Link;
 import mchorse.bbs.settings.ui.UIValueFactory;
 import mchorse.bbs.settings.values.base.BaseValueBasic;
@@ -21,6 +23,7 @@ public class ValueLink extends BaseValueBasic<Link> implements IValueUIProvider 
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public List<UIElement> getFields(UIElement ui) {
         UIButton pick = new UIButton(UIKeys.TEXTURE_PICK_TEXTURE, (button) ->
         {
