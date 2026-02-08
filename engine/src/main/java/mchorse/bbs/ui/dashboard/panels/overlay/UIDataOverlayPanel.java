@@ -39,9 +39,8 @@ public class UIDataOverlayPanel<T extends ValueGroup> extends UICRUDOverlayPanel
             } catch (Exception e) {
             }
 
-            menu.action(Icons.FOLDER, UIKeys.PANELS_CONTEXT_OPEN, () ->
-            {
-                File folder = ((FolderManager) this.panel.getType().getManager()).getFolder();
+            menu.action(Icons.FOLDER, UIKeys.PANELS_CONTEXT_OPEN, () -> {
+                File folder = this.panel.getType().getRepository().getFolder();
 
                 UIUtils.openFolder(new File(folder, this.namesList.getPath().toString()));
             });
@@ -53,7 +52,7 @@ public class UIDataOverlayPanel<T extends ValueGroup> extends UICRUDOverlayPanel
     }
 
     private void paste(MapType data) {
-        this.transientCopy = (T) this.panel.getType().getManager().create("", data);
+        this.transientCopy = (T) this.panel.getType().getRepository().create("", data);
 
         this.addNewData(this.add);
     }
@@ -68,7 +67,7 @@ public class UIDataOverlayPanel<T extends ValueGroup> extends UICRUDOverlayPanel
             this.namesList.addFile(name);
 
             if (this.transientCopy == null) {
-                this.transientCopy = (T) this.panel.getType().getManager().create(name);
+                this.transientCopy = (T) this.panel.getType().getRepository().create(name);
 
                 this.fillDefaultData(this.transientCopy);
             } else {
@@ -83,7 +82,7 @@ public class UIDataOverlayPanel<T extends ValueGroup> extends UICRUDOverlayPanel
 
     @Override
     protected void addNewFolder(String path) {
-        if (((FolderManager) this.panel.getType().getManager()).addFolder(path)) {
+        if (((FolderManager) this.panel.getType().getRepository()).addFolder(path)) {
             this.panel.requestNames();
         }
     }
@@ -96,10 +95,10 @@ public class UIDataOverlayPanel<T extends ValueGroup> extends UICRUDOverlayPanel
     protected void dupeData(String name) {
         if (this.panel.getData() != null && !this.namesList.getList().contains(name)) {
             this.panel.save();
-            this.panel.getType().getManager().save(name, this.panel.getData().toData().asMap());
+            this.panel.getType().getRepository().save(name, this.panel.getData().toData().asMap());
             this.namesList.addFile(name);
 
-            T data = (T) this.panel.getType().getManager().create(name, this.panel.getData().toData().asMap());
+            T data = (T) this.panel.getType().getRepository().create(name, this.panel.getData().toData().asMap());
 
             this.panel.fill(data);
         }
@@ -108,7 +107,7 @@ public class UIDataOverlayPanel<T extends ValueGroup> extends UICRUDOverlayPanel
     @Override
     protected void renameData(String name) {
         if (this.panel.getData() != null && !this.namesList.getList().contains(name)) {
-            this.panel.getType().getManager().rename(this.panel.getData().getId(), name);
+            this.panel.getType().getRepository().rename(this.panel.getData().getId(), name);
 
             this.namesList.removeFile(this.panel.getData().getId());
             this.namesList.addFile(name);
@@ -121,7 +120,7 @@ public class UIDataOverlayPanel<T extends ValueGroup> extends UICRUDOverlayPanel
     protected void renameFolder(String name) {
         String path = this.namesList.getCurrentFirst().toString();
 
-        if (((FolderManager) this.panel.getType().getManager()).renameFolder(path, name)) {
+        if (((FolderManager) this.panel.getType().getRepository()).renameFolder(path, name)) {
             if (this.panel.getData() != null) {
                 String id = this.panel.getData().getId();
 
@@ -135,7 +134,7 @@ public class UIDataOverlayPanel<T extends ValueGroup> extends UICRUDOverlayPanel
     @Override
     protected void removeData() {
         if (this.panel.getData() != null) {
-            this.panel.getType().getManager().delete(this.panel.getData().getId());
+            this.panel.getType().getRepository().delete(this.panel.getData().getId());
 
             this.namesList.removeFile(this.panel.getData().getId());
             this.panel.fill(null);
@@ -146,7 +145,7 @@ public class UIDataOverlayPanel<T extends ValueGroup> extends UICRUDOverlayPanel
     protected void removeFolder() {
         String path = this.namesList.getCurrentFirst().toString();
 
-        if (((FolderManager) this.panel.getType().getManager()).deleteFolder(path)) {
+        if (((FolderManager) this.panel.getType().getRepository()).deleteFolder(path)) {
             this.panel.requestNames();
         }
     }
