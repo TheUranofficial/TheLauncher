@@ -1,4 +1,4 @@
-package mchorse.bbs.network.utils;
+package mchorse.bbs.network.core.utils;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

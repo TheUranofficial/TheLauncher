@@ -1,4 +1,4 @@
-package mchorse.bbs.network.packet;
+package mchorse.bbs.network.core.packet;
 
 import io.netty.buffer.ByteBuf;
 

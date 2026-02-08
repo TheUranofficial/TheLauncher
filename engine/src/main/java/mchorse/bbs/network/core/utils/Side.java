@@ -1,4 +1,4 @@
-package mchorse.bbs.network.utils;
+package mchorse.bbs.network.core.utils;
 
 public enum Side {
     CLIENT,

@@ -1,14 +1,15 @@
-package mchorse.bbs.network.server;
+package mchorse.bbs.network.core.server;
 
+import mchorse.bbs.network.core.AbstractDispatcher;
+import mchorse.bbs.network.core.utils.ChannelHandler;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.MultiThreadIoEventLoopGroup;
 import io.netty.channel.nio.NioIoHandler;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import mchorse.bbs.network.AbstractDispatcher;
-import mchorse.bbs.network.utils.ChannelHandler;
-import mchorse.bbs.network.utils.Side;
-import mchorse.bbs.network.utils.SideOnly;
+import mchorse.bbs.network.core.utils.Side;
+import mchorse.bbs.network.core.utils.SideOnly;
 
 @SideOnly(Side.SERVER)
 public class NettyServer {
@@ -34,7 +35,7 @@ public class NettyServer {
         }
     }
 
-    public void startup(int port) {
+    public ChannelFuture startup(int port) {
         ServerBootstrap bootstrap = new ServerBootstrap();
 
         bootstrap
@@ -47,9 +48,11 @@ public class NettyServer {
             .childOption(ChannelOption.TCP_NODELAY, true)
             .childHandler(new ServerChannel(this.dispatcher, this.handler, this.encryptionKey));
 
-        bootstrap.bind(port).syncUninterruptibly();
+        ChannelFuture future = bootstrap.bind(port).syncUninterruptibly();
 
         System.out.println("Server started on " + port);
+
+        return future;
     }
 
     private String maskKey(String key) {

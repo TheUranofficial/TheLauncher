@@ -1,16 +1,16 @@
-package mchorse.bbs.network.server;
+package mchorse.bbs.network.core.server;
 
+import mchorse.bbs.network.core.AbstractDispatcher;
+import mchorse.bbs.network.core.codec.PacketDecoder;
+import mchorse.bbs.network.core.codec.PacketEncoder;
+import mchorse.bbs.network.core.utils.ChannelHandler;
+import mchorse.bbs.network.core.utils.Encryption;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import mchorse.bbs.network.AbstractDispatcher;
-import mchorse.bbs.network.codec.PacketDecoder;
-import mchorse.bbs.network.codec.PacketEncoder;
-import mchorse.bbs.network.utils.ChannelHandler;
-import mchorse.bbs.network.utils.Encryption;
-import mchorse.bbs.network.utils.Side;
-import mchorse.bbs.network.utils.SideOnly;
+import mchorse.bbs.network.core.utils.Side;
+import mchorse.bbs.network.core.utils.SideOnly;
 
 @SideOnly(Side.SERVER)
 public class ServerChannel extends ChannelInitializer<SocketChannel> {
@@ -28,6 +28,10 @@ public class ServerChannel extends ChannelInitializer<SocketChannel> {
     protected void initChannel(SocketChannel channel) throws Exception {
         ChannelPipeline pipeline = channel.pipeline();
 
+        if (this.encryptionKey != null && !this.encryptionKey.isEmpty()) {
+            pipeline.addLast("encryption", new Encryption(this.encryptionKey));
+        }
+
         pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(
             1048576,
             0,
@@ -36,14 +40,8 @@ public class ServerChannel extends ChannelInitializer<SocketChannel> {
             4
         ));
 
-        if (this.encryptionKey != null && !this.encryptionKey.isEmpty()) {
-            pipeline.addLast("encryption", new Encryption(this.encryptionKey));
-        }
-
         pipeline.addLast("decoder", new PacketDecoder(this.dispatcher));
         pipeline.addLast("encoder", new PacketEncoder());
         pipeline.addLast("handler", this.handler.getConstructor(AbstractDispatcher.class).newInstance(this.dispatcher));
-
-        this.dispatcher.setChannel(channel);
     }
 }

@@ -1,11 +1,11 @@
-package mchorse.bbs.network.codec;
+package mchorse.bbs.network.core.codec;
 
-import mchorse.bbs.network.AbstractDispatcher;
+import mchorse.bbs.network.core.AbstractDispatcher;
+import mchorse.bbs.network.core.packet.Packet;
+import mchorse.bbs.network.core.utils.ByteSerialize;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import mchorse.bbs.network.packet.Packet;
-import mchorse.bbs.network.utils.ByteSerialize;
 
 import java.util.List;
 

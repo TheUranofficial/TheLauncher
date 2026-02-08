@@ -2,8 +2,8 @@ package mchorse.bbs.utils.resources;
 
 import mchorse.bbs.core.IDisposable;
 import mchorse.bbs.graphics.texture.Texture;
-import mchorse.bbs.network.utils.Side;
-import mchorse.bbs.network.utils.SideOnly;
+import mchorse.bbs.network.core.utils.Side;
+import mchorse.bbs.network.core.utils.SideOnly;
 import mchorse.bbs.utils.IOUtils;
 import mchorse.bbs.utils.colors.Color;
 import mchorse.bbs.utils.colors.Colors;

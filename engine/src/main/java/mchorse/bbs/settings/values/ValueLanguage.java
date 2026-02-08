@@ -2,8 +2,8 @@ package mchorse.bbs.settings.values;
 
 import mchorse.bbs.BBS;
 import mchorse.bbs.l10n.L10n;
-import mchorse.bbs.network.utils.Side;
-import mchorse.bbs.network.utils.SideOnly;
+import mchorse.bbs.network.core.utils.Side;
+import mchorse.bbs.network.core.utils.SideOnly;
 import mchorse.bbs.settings.ui.UIValueFactory;
 import mchorse.bbs.ui.UIKeys;
 import mchorse.bbs.ui.framework.elements.UIElement;

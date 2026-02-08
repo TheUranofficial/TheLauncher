@@ -1,18 +1,19 @@
-package mchorse.bbs.network.client;
+package mchorse.bbs.network.core.client;
 
-import mchorse.bbs.network.AbstractDispatcher;
+import mchorse.bbs.network.core.AbstractDispatcher;
+import mchorse.bbs.network.core.utils.ChannelHandler;
+import mchorse.bbs.network.core.utils.Side;
+import mchorse.bbs.network.core.utils.SideOnly;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.MultiThreadIoEventLoopGroup;
 import io.netty.channel.nio.NioIoHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import mchorse.bbs.network.utils.ChannelHandler;
-import mchorse.bbs.network.utils.Side;
-import mchorse.bbs.network.utils.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class NettyClient {
-    private AbstractDispatcher dispatcher;
+    public AbstractDispatcher dispatcher;
     private String encryptionKey;
     private MultiThreadIoEventLoopGroup workerGroup = new MultiThreadIoEventLoopGroup(NioIoHandler.newFactory());
     private Class<? extends ChannelHandler> handler;
@@ -31,7 +32,7 @@ public class NettyClient {
         }
     }
 
-    public void connect(String host, int port) {
+    public ChannelFuture connect(String host, int port) {
         Bootstrap bootstrap = new Bootstrap();
 
         bootstrap
@@ -40,8 +41,11 @@ public class NettyClient {
             .option(ChannelOption.SO_KEEPALIVE, true)
             .handler(new ClientChannel(this.dispatcher, this.handler, this.encryptionKey));
 
-        bootstrap.connect(host, port).syncUninterruptibly();
+        ChannelFuture future = bootstrap.connect(host, port).syncUninterruptibly();
+
         System.out.println("Connected to " + host + ":" + port);
+
+        return future;
     }
 
     public void delete() {

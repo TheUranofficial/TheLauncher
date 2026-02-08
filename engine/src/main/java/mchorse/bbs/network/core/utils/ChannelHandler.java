@@ -1,9 +1,9 @@
-package mchorse.bbs.network.utils;
+package mchorse.bbs.network.core.utils;
 
+import mchorse.bbs.network.core.AbstractDispatcher;
+import mchorse.bbs.network.core.packet.Packet;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import mchorse.bbs.network.AbstractDispatcher;
-import mchorse.bbs.network.packet.Packet;
 
 public abstract class ChannelHandler extends SimpleChannelInboundHandler<Packet> {
     protected AbstractDispatcher dispatcher;

@@ -12,6 +12,7 @@ import com.theuran.launcher.ui.gamemode.UIGameModePanel;
 import com.theuran.launcher.ui.l10n.UILanguageEditorOverlayPanel;
 import com.theuran.launcher.ui.utility.UIUtilityMenu;
 import com.theuran.launcher.ui.utility.UIUtilityOverlayPanel;
+import io.netty.channel.ChannelFuture;
 import mchorse.bbs.BBS;
 import mchorse.bbs.BBSSettings;
 import mchorse.bbs.bridge.IBridge;
@@ -34,9 +35,8 @@ import mchorse.bbs.graphics.window.IFileDropListener;
 import mchorse.bbs.graphics.window.Window;
 import mchorse.bbs.l10n.L10n;
 import mchorse.bbs.l10n.L10nUtils;
-import mchorse.bbs.network.client.NettyClient;
-import mchorse.bbs.network.thelauncher.Dispatcher;
-import mchorse.bbs.network.utils.Side;
+import mchorse.bbs.network.Dispatcher;
+import mchorse.bbs.network.core.client.NettyClient;
 import mchorse.bbs.resources.packs.InternalAssetsSourcePack;
 import mchorse.bbs.settings.values.ValueLanguage;
 import mchorse.bbs.ui.framework.UIBaseMenu;
@@ -64,6 +64,7 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
     public ScreenshotRecorder screenshot;
 
     public NettyClient client;
+    public ChannelFuture channel;
 
     private Map<Class<?>, Object> apis = new HashMap<>();
 
@@ -197,8 +198,9 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
         this.registerSettingsCallbacks();
 
         TheLauncher.PROFILER.endBegin("init_netty_client");
-        this.client = new NettyClient(new Dispatcher(Side.CLIENT), PacketHandler.class, "mimi");
-        this.client.connect(TheLauncherSettings.serverIp.get(), TheLauncherSettings.serverPort.get());
+
+        this.client = new NettyClient(new Dispatcher(), PacketHandler.class, "nini");
+        this.channel = this.client.connect(TheLauncherSettings.serverIp.get(), TheLauncherSettings.serverPort.get());
     }
 
     private void registerSettingsCallbacks() {

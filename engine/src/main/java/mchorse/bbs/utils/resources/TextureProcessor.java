@@ -1,8 +1,8 @@
 package mchorse.bbs.utils.resources;
 
 import mchorse.bbs.BBS;
-import mchorse.bbs.network.utils.Side;
-import mchorse.bbs.network.utils.SideOnly;
+import mchorse.bbs.network.core.utils.Side;
+import mchorse.bbs.network.core.utils.SideOnly;
 import mchorse.bbs.utils.colors.Color;
 import mchorse.bbs.utils.colors.Colors;
 

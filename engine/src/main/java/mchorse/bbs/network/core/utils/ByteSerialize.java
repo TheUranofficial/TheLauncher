@@ -1,4 +1,4 @@
-package mchorse.bbs.network.utils;
+package mchorse.bbs.network.core.utils;
 
 import io.netty.buffer.ByteBuf;
 
@@ -33,11 +33,18 @@ public class ByteSerialize {
     }
 
     public static void writeString(ByteBuf buf, String string) {
-        writeVarInt(buf, string.length());
-        buf.writeCharSequence(string, StandardCharsets.UTF_8);
+        byte[] bytes = string.getBytes(StandardCharsets.UTF_8);
+
+        writeVarInt(buf, bytes.length);
+
+        buf.writeBytes(bytes);
     }
 
     public static String readString(ByteBuf buf) {
-        return buf.readCharSequence(readVarInt(buf), StandardCharsets.UTF_8).toString();
+        byte[] bytes = new byte[readVarInt(buf)];
+
+        buf.readBytes(bytes);
+
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 }

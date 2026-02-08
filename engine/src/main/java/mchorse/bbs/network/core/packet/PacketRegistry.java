@@ -1,4 +1,4 @@
-package mchorse.bbs.network.packet;
+package mchorse.bbs.network.core.packet;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,10 +8,6 @@ public class PacketRegistry {
 
     public <T extends Packet> void register(Class<T> packet) {
         this.packets.put(packet.getSimpleName(), packet);
-    }
-
-    public String getId(Packet packet) {
-        return packet.getClass().getSimpleName();
     }
 
     public Packet create(String id) {

@@ -1,7 +1,7 @@
 package mchorse.bbs.utils.factory;
 
-import mchorse.bbs.network.utils.Side;
-import mchorse.bbs.network.utils.SideOnly;
+import mchorse.bbs.network.core.utils.Side;
+import mchorse.bbs.network.core.utils.SideOnly;
 import mchorse.bbs.utils.colors.Colors;
 
 @SideOnly(Side.CLIENT)
