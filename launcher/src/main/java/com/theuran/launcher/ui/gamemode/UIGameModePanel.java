@@ -3,7 +3,7 @@ package com.theuran.launcher.ui.gamemode;
 import com.theuran.launcher.settings.TheLauncherSettings;
 import com.theuran.launcher.utils.ContentTypeApp;
 import com.theuran.launcher.ui.UIKeysApp;
-import com.theuran.launcher.gamemode.GameMode;
+import mchorse.bbs.gamemode.GameMode;
 import mchorse.bbs.BBS;
 import mchorse.bbs.game.utils.ContentType;
 import mchorse.bbs.l10n.keys.IKey;

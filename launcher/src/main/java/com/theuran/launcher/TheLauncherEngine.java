@@ -14,6 +14,7 @@ import com.theuran.launcher.ui.utility.UIUtilityMenu;
 import com.theuran.launcher.ui.utility.UIUtilityOverlayPanel;
 import io.netty.channel.ChannelFuture;
 import mchorse.bbs.BBS;
+import mchorse.bbs.BBSData;
 import mchorse.bbs.BBSSettings;
 import mchorse.bbs.bridge.IBridge;
 import mchorse.bbs.bridge.IBridgeCamera;
@@ -185,7 +186,7 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
         TheLauncher.PROFILER.endBegin("init_bbs");
         BBS.initialize();
         TheLauncher.PROFILER.endBegin("init_launcher_data");
-        TheLauncherData.load(BBS.getDataFolder(), this);
+        BBSData.load(BBS.getDataFolder(), this);
 
         TheLauncher.PROFILER.endBegin("init_renderer");
         this.renderer.init();
@@ -219,7 +220,7 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
         this.screen.delete();
         this.client.delete();
 
-        TheLauncherData.delete();
+        BBSData.delete();
         BBS.terminate();
     }
 

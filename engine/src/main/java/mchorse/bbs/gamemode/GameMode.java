@@ -1,4 +1,4 @@
-package com.theuran.launcher.gamemode;
+package mchorse.bbs.gamemode;
 
 import mchorse.bbs.settings.values.ValueGroup;
 import mchorse.bbs.settings.values.ValueString;

@@ -15,14 +15,6 @@ public class ConnectionChannel {
         this.channel.writeAndFlush(new PacketType(packet.getClass().getSimpleName(), packet));
     }
 
-    public static void send(ChannelHandlerContext context, Packet packet) {
-        context.writeAndFlush(new PacketType(packet.getClass().getSimpleName(), packet));
-    }
-
-    public static void send(Channel channel, Packet packet) {
-        channel.writeAndFlush(new PacketType(packet.getClass().getSimpleName(), packet));
-    }
-
     public Channel getChannel() {
         return this.channel;
     }

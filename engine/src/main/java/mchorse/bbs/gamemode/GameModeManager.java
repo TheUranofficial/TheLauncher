@@ -1,4 +1,4 @@
-package com.theuran.launcher.gamemode;
+package mchorse.bbs.gamemode;
 
 import mchorse.bbs.data.types.MapType;
 import mchorse.bbs.utils.manager.BaseManager;

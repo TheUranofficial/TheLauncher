@@ -1,11 +1,11 @@
-package com.theuran.launcher;
+package mchorse.bbs;
 
-import com.theuran.launcher.gamemode.GameModeManager;
 import mchorse.bbs.bridge.IBridge;
+import mchorse.bbs.gamemode.GameModeManager;
 
 import java.io.File;
 
-public class TheLauncherData {
+public class BBSData {
     private static GameModeManager gameModes;
 
     public static GameModeManager getGameModes() {

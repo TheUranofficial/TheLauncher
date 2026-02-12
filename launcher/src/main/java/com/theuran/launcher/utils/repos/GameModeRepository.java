@@ -1,6 +1,6 @@
 package com.theuran.launcher.utils.repos;
 
-import com.theuran.launcher.gamemode.GameMode;
+import mchorse.bbs.gamemode.GameMode;
 import mchorse.bbs.data.types.MapType;
 import mchorse.bbs.utils.repos.IRepository;
 
