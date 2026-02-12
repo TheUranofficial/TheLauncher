@@ -55,6 +55,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TheLauncherEngine extends Engine implements IBridge, IFileDropListener {
+    private static TheLauncherEngine instance;
+
     public TheLauncherRenderer renderer;
     public UIScreen screen;
 
@@ -88,6 +90,8 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
 
         this.registerMiscellaneous();
         this.registerKeybinds();
+
+        instance = this;
     }
 
     @Subscribe
@@ -185,8 +189,6 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
 
         TheLauncher.PROFILER.endBegin("init_bbs");
         BBS.initialize();
-        TheLauncher.PROFILER.endBegin("init_launcher_data");
-        BBSData.load(BBS.getDataFolder(), this);
 
         TheLauncher.PROFILER.endBegin("init_renderer");
         this.renderer.init();
@@ -307,5 +309,9 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
     @Override
     public void acceptFilePaths(String[] paths) {
         this.screen.acceptFilePaths(paths);
+    }
+
+    public static TheLauncherEngine getInstance() {
+        return instance;
     }
 }

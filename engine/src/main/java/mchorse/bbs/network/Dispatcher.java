@@ -13,6 +13,8 @@ import java.util.function.Consumer;
 public class Dispatcher extends AbstractDispatcher {
     @SideOnly(Side.CLIENT)
     public static Map<Integer, Consumer<BaseType>> callbacks = new HashMap<>();
+    @SideOnly(Side.CLIENT)
+    public static int ids = 0;
 
     @Override
     protected void setup() {

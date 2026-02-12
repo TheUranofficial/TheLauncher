@@ -1,6 +1,7 @@
 package com.theuran.server;
 
 import com.theuran.server.network.PacketHandler;
+import mchorse.bbs.BBSData;
 import mchorse.bbs.data.types.MapType;
 import mchorse.bbs.network.Dispatcher;
 import mchorse.bbs.network.core.server.NettyServer;
@@ -91,9 +92,11 @@ public class TheLauncherServer {
             throw new IllegalStateException("Given game directory '" + this.directory + "' doesn't exist or not a directory...");
         }
 
-        NettyServer server = new NettyServer(new Dispatcher(), PacketHandler.class, "mimi");
+        NettyServer server = new NettyServer(new Dispatcher(), PacketHandler.class, "nini");
 
         try {
+            PROFILER.endBegin("init_bbs_data");
+            BBSData.load(this.directory, null);
             PROFILER.endBegin("startup_netty_server");
             server.startup(this.port);
             PROFILER.end();

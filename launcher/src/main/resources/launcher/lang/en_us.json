@@ -62,5 +62,6 @@
   "launcher.ui.welcome.sections.keys": "Main keybinds",
   "launcher.ui.welcome.keys-subtitle": "Hover over the keys to see what they are doing...",
   "launcher.ui.gamemode.title": "Gamemodes",
-  "launcher.ui.gamemode.play": "Play"
+  "launcher.ui.gamemode.play": "Play",
+  "launcher.network.disconnected": "Don't able to connect this server"
 }

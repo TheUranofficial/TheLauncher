@@ -1,5 +1,6 @@
 package mchorse.bbs.network.core.server;
 
+import mchorse.bbs.core.Engine;
 import mchorse.bbs.network.core.AbstractDispatcher;
 import mchorse.bbs.network.core.codec.PacketDecoder;
 import mchorse.bbs.network.core.codec.PacketEncoder;
@@ -42,6 +43,6 @@ public class ServerChannel extends ChannelInitializer<SocketChannel> {
 
         pipeline.addLast("decoder", new PacketDecoder(this.dispatcher));
         pipeline.addLast("encoder", new PacketEncoder());
-        pipeline.addLast("handler", this.handler.getConstructor(AbstractDispatcher.class).newInstance(this.dispatcher));
+        pipeline.addLast("handler", this.handler.newInstance());
     }
 }
