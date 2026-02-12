@@ -1,13 +1,83 @@
 package mchorse.bbs.data;
 
+import io.netty.buffer.ByteBuf;
+import mchorse.bbs.data.storage.DataStorage;
+import mchorse.bbs.data.types.BaseType;
 import mchorse.bbs.data.types.ListType;
+import mchorse.bbs.network.core.utils.ByteSerialize;
 import org.joml.Matrix3f;
 import org.joml.Vector2i;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 public class DataStorageUtils {
+    private static final byte[] EMPTY = new byte[0];
+
+    /* Packet */
+
+    public static byte[] writeToBytes(BaseType type) {
+        if (type == null) {
+            return EMPTY;
+        }
+
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+            DataStorage.writeToStream(stream, type);
+
+            return stream.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return EMPTY;
+    }
+
+    public static BaseType readFromBytes(byte[] bytes) {
+        if (bytes == null) {
+            return null;
+        }
+
+        try {
+            ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
+
+            return DataStorage.readFromStream(stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static void writeToPacket(ByteBuf packet, BaseType type) {
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+            DataStorage.writeToStream(stream, type);
+
+            ByteSerialize.writeByteArray(packet, stream.toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static BaseType readFromPacket(ByteBuf packet) {
+        try {
+            ByteArrayInputStream stream = new ByteArrayInputStream(ByteSerialize.readByteArray(packet));
+
+            return DataStorage.readFromStream(stream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     /* Vector2i */
 
     public static ListType vector2iToData(Vector2i vector) {
@@ -129,9 +199,9 @@ public class DataStorageUtils {
     public static Matrix3f matrix3fFromData(ListType element, Matrix3f defaultValue) {
         if (element != null && element.size() >= 9) {
             return new Matrix3f(
-                    element.getFloat(0), element.getFloat(1), element.getFloat(2),
-                    element.getFloat(3), element.getFloat(4), element.getFloat(5),
-                    element.getFloat(6), element.getFloat(7), element.getFloat(8)
+                element.getFloat(0), element.getFloat(1), element.getFloat(2),
+                element.getFloat(3), element.getFloat(4), element.getFloat(5),
+                element.getFloat(6), element.getFloat(7), element.getFloat(8)
             );
         }
 

@@ -82,7 +82,7 @@ public class UIDataOverlayPanel<T extends ValueGroup> extends UICRUDOverlayPanel
 
     @Override
     protected void addNewFolder(String path) {
-        if (((FolderManager) this.panel.getType().getRepository()).addFolder(path)) {
+        if (((FolderManager<?>) this.panel.getType().getRepository()).addFolder(path)) {
             this.panel.requestNames();
         }
     }
@@ -120,7 +120,7 @@ public class UIDataOverlayPanel<T extends ValueGroup> extends UICRUDOverlayPanel
     protected void renameFolder(String name) {
         String path = this.namesList.getCurrentFirst().toString();
 
-        if (((FolderManager) this.panel.getType().getRepository()).renameFolder(path, name)) {
+        if (((FolderManager<?>) this.panel.getType().getRepository()).renameFolder(path, name)) {
             if (this.panel.getData() != null) {
                 String id = this.panel.getData().getId();
 
@@ -145,7 +145,7 @@ public class UIDataOverlayPanel<T extends ValueGroup> extends UICRUDOverlayPanel
     protected void removeFolder() {
         String path = this.namesList.getCurrentFirst().toString();
 
-        if (((FolderManager) this.panel.getType().getRepository()).deleteFolder(path)) {
+        if (((FolderManager<?>) this.panel.getType().getRepository()).deleteFolder(path)) {
             this.panel.requestNames();
         }
     }

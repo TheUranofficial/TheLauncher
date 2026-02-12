@@ -1,6 +1,7 @@
 package mchorse.bbs.network.core.utils;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.DecoderException;
 
 import java.nio.charset.StandardCharsets;
 
@@ -46,5 +47,30 @@ public class ByteSerialize {
         buf.readBytes(bytes);
 
         return new String(bytes, StandardCharsets.UTF_8);
+    }
+
+    public static byte[] readByteArray(ByteBuf buf) {
+        return readByteArray(buf, buf.readableBytes());
+    }
+
+    public static ByteBuf writeByteArray(ByteBuf buf, byte[] array) {
+        writeVarInt(buf, array.length);
+        buf.writeBytes(array);
+
+        return buf;
+    }
+
+    public static byte[] readByteArray(ByteBuf buf, int maxSize) {
+        int i = readVarInt(buf);
+
+        if (i > maxSize) {
+            throw new DecoderException("ByteArray with size " + i + " is bigger than allowed " + maxSize);
+        } else {
+            byte[] bs = new byte[i];
+
+            buf.readBytes(bs);
+
+            return bs;
+        }
     }
 }
