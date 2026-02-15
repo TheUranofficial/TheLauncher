@@ -24,14 +24,20 @@ public abstract class AbstractDispatcher {
     }
 
     public static void send(Packet packet, ChannelHandlerContext context) {
-        context.writeAndFlush(new ConnectionChannel.PacketType(packet.getClass().getSimpleName(), packet));
+        if (context != null) {
+            context.writeAndFlush(new ConnectionChannel.PacketType(packet.getClass().getSimpleName(), packet));
+        }
     }
 
     public static void send(Packet packet, ConnectionChannel channel) {
-        channel.getChannel().writeAndFlush(new ConnectionChannel.PacketType(packet.getClass().getSimpleName(), packet));
+        if (channel != null && channel.getChannel() != null) {
+            channel.getChannel().writeAndFlush(new ConnectionChannel.PacketType(packet.getClass().getSimpleName(), packet));
+        }
     }
 
     public static void send(Packet packet, Channel channel) {
-        channel.writeAndFlush(new ConnectionChannel.PacketType(packet.getClass().getSimpleName(), packet));
+        if (channel != null) {
+            channel.writeAndFlush(new ConnectionChannel.PacketType(packet.getClass().getSimpleName(), packet));
+        }
     }
 }

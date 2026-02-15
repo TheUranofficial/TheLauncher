@@ -12,6 +12,7 @@ import com.theuran.launcher.ui.gamemode.UIGameModePanel;
 import com.theuran.launcher.ui.l10n.UILanguageEditorOverlayPanel;
 import com.theuran.launcher.ui.utility.UIUtilityMenu;
 import com.theuran.launcher.ui.utility.UIUtilityOverlayPanel;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import mchorse.bbs.BBS;
 import mchorse.bbs.BBSData;
@@ -204,6 +205,10 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
 
         this.client = new NettyClient(new Dispatcher(), PacketHandler.class, "nini");
         this.channel = this.client.connect(TheLauncherSettings.serverIp.get(), TheLauncherSettings.serverPort.get());
+
+        if (this.channel == null) {
+            this.scheduledRunnables.add(() -> this.screen.menu.context.notify(UIKeysApp.NETWORK_DISCONNECTED, BBSSettings.primaryColor()));
+        }
     }
 
     private void registerSettingsCallbacks() {
@@ -278,7 +283,7 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
     @Override
     public boolean handleKey(int key, int scancode, int action, int mods) {
         return this.keys.keybinds.handleKey(key, scancode, action, mods)
-                || this.screen.handleKey(key, scancode, action, mods);
+            || this.screen.handleKey(key, scancode, action, mods);
     }
 
     @Override
@@ -309,6 +314,14 @@ public class TheLauncherEngine extends Engine implements IBridge, IFileDropListe
     @Override
     public void acceptFilePaths(String[] paths) {
         this.screen.acceptFilePaths(paths);
+    }
+
+    public static Channel getChannel() {
+        if (instance.channel != null) {
+            return instance.channel.channel();
+        } else {
+            return null;
+        }
     }
 
     public static TheLauncherEngine getInstance() {

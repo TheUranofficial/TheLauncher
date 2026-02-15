@@ -130,7 +130,7 @@ public class GameModeRepository implements IRepository<GameMode> {
     }
 
     private void sendPacket(RepositoryOperation operation, MapType data, int callbackId) {
-        Dispatcher.send(new ManagerDataPacket(operation, data, callbackId), TheLauncherEngine.getInstance().channel.channel());
+        Dispatcher.send(new ManagerDataPacket(operation, data, callbackId), TheLauncherEngine.getChannel());
     }
 
     private void sendPacket(RepositoryOperation operation, MapType data, Consumer<BaseType> callback) {

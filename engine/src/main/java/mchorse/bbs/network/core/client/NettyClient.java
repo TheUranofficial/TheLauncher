@@ -41,9 +41,15 @@ public class NettyClient {
             .option(ChannelOption.SO_KEEPALIVE, true)
             .handler(new ClientChannel(this.dispatcher, this.handler, this.encryptionKey));
 
-        ChannelFuture future = bootstrap.connect(host, port).syncUninterruptibly();
+        ChannelFuture future = null;
 
-        System.out.println("Connected to " + host + ":" + port);
+        try {
+            future = bootstrap.connect(host, port).syncUninterruptibly();
+
+            System.out.println("Connected to " + host + ":" + port);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return future;
     }

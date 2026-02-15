@@ -61,6 +61,7 @@ public class UIKeysApp {
     /* GameModes UI dashboard panel */
     public static final IKey GAMEMODE_TITLE = IKey.lang("launcher.ui.gamemode.title");
     public static final IKey GAMEMODE_PLAY = IKey.lang("launcher.ui.gamemode.play");
+    public static final IKey GAMEMODE_STOP = IKey.lang("launcher.ui.gamemode.stop");
 
     /* Network */
     public static final IKey NETWORK_DISCONNECTED = IKey.lang("launcher.network.disconnected");
