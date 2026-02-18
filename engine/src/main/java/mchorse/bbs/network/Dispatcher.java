@@ -5,6 +5,8 @@ import mchorse.bbs.network.core.AbstractDispatcher;
 import mchorse.bbs.network.core.utils.Side;
 import mchorse.bbs.network.core.utils.SideOnly;
 import mchorse.bbs.network.packets.ManagerDataPacket;
+import mchorse.bbs.network.packets.RequestVersionManifestPacket;
+import mchorse.bbs.network.packets.SendFilePacket;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,5 +21,7 @@ public class Dispatcher extends AbstractDispatcher {
     @Override
     protected void setup() {
         this.register(ManagerDataPacket.class);
+        this.register(RequestVersionManifestPacket.class);
+        this.register(SendFilePacket.class);
     }
 }

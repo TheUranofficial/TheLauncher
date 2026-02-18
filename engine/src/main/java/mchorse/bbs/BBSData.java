@@ -6,6 +6,8 @@ import mchorse.bbs.gamemode.GameModeManager;
 import java.io.File;
 
 public class BBSData {
+    public static File folder;
+
     private static GameModeManager gameModes;
 
     public static GameModeManager getGameModes() {
@@ -13,6 +15,7 @@ public class BBSData {
     }
 
     public static void load(File folder, IBridge bridge) {
+        BBSData.folder = folder;
         gameModes = new GameModeManager(new File(folder, "gameModes"));
     }
 

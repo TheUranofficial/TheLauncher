@@ -26,7 +26,6 @@ public class ManagerDataPacket extends CommonPacket {
     private final ValueType data = new ValueType("data", null);
 
     public ManagerDataPacket() {
-        super();
         this.add(this.callbackId, this.operation, this.data);
     }
 
@@ -37,8 +36,8 @@ public class ManagerDataPacket extends CommonPacket {
         this.callbackId.set(callbackId);
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
+    @SideOnly(Side.CLIENT)
     public void handleClient(ConnectionChannel context) {
         Consumer<BaseType> callback = Dispatcher.callbacks.remove(this.callbackId.get());
 
@@ -47,8 +46,8 @@ public class ManagerDataPacket extends CommonPacket {
         }
     }
 
-    @SideOnly(Side.SERVER)
     @Override
+    @SideOnly(Side.SERVER)
     public void handle(ConnectionChannel channel) {
         GameModeManager manager = BBSData.getGameModes();
         MapType data = this.data.get().asMap();
