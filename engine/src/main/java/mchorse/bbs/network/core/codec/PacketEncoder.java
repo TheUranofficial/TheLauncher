@@ -10,6 +10,6 @@ public class PacketEncoder extends MessageToByteEncoder<ConnectionChannel.Packet
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, ConnectionChannel.PacketType packet, ByteBuf byteBuf) {
         ByteSerialize.writeString(byteBuf, packet.getId());
-        packet.getPacket().toBytes(byteBuf);
+        packet.getByteBuf().accept(byteBuf);
     }
 }

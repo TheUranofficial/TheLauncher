@@ -25,19 +25,19 @@ public abstract class AbstractDispatcher {
 
     public static void send(Packet packet, ChannelHandlerContext context) {
         if (context != null) {
-            context.writeAndFlush(new ConnectionChannel.PacketType(packet.getClass().getSimpleName(), packet));
+            send(packet, new ConnectionChannel(context.channel()));
         }
     }
 
     public static void send(Packet packet, ConnectionChannel channel) {
         if (channel != null && channel.getChannel() != null) {
-            channel.getChannel().writeAndFlush(new ConnectionChannel.PacketType(packet.getClass().getSimpleName(), packet));
+            send(packet, channel.getChannel());
         }
     }
 
     public static void send(Packet packet, Channel channel) {
         if (channel != null) {
-            channel.writeAndFlush(new ConnectionChannel.PacketType(packet.getClass().getSimpleName(), packet));
+            channel.writeAndFlush(new ConnectionChannel.PacketType(packet.getClass().getSimpleName(), packet::toBytes));
         }
     }
 }
