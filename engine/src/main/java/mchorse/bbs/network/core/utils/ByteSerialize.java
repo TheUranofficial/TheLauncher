@@ -49,18 +49,18 @@ public class ByteSerialize {
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
-    public static byte[] readByteArray(ByteBuf buf) {
-        return readByteArray(buf, buf.readableBytes());
+    public static byte[] readBytes(ByteBuf buf) {
+        return readBytes(buf, buf.readableBytes());
     }
 
-    public static ByteBuf writeByteArray(ByteBuf buf, byte[] array) {
+    public static ByteBuf writeBytes(ByteBuf buf, byte[] array) {
         writeVarInt(buf, array.length);
         buf.writeBytes(array);
 
         return buf;
     }
 
-    public static byte[] readByteArray(ByteBuf buf, int maxSize) {
+    public static byte[] readBytes(ByteBuf buf, int maxSize) {
         int i = readVarInt(buf);
 
         if (i > maxSize) {

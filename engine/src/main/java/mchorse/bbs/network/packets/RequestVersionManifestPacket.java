@@ -9,7 +9,8 @@ import mchorse.bbs.settings.values.ValueString;
 import mchorse.bbs.utils.IOUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class RequestVersionManifestPacket extends ServerPacket {
     private final ValueString version = new ValueString("version", "");
@@ -29,8 +30,8 @@ public class RequestVersionManifestPacket extends ServerPacket {
         try {
             File manifest = new File(BBSData.folder, "meta/versions/" + version + "/manifest.json");
 
-            channel.send(new SendFilePacket("versions/" + version + "/manifest.json", IOUtils.readText(manifest)));
-        } catch (FileNotFoundException e) {
+            channel.send(new SendFilePacket("versions/" + version + "/manifest.json", IOUtils.readBytes(new FileInputStream(manifest))));
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

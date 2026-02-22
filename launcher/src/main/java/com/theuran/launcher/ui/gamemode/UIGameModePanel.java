@@ -1,12 +1,13 @@
 package com.theuran.launcher.ui.gamemode;
 
-import com.theuran.launcher.settings.TheLauncherSettings;
+import com.theuran.launcher.TheLauncherEngine;
 import com.theuran.launcher.utils.ContentTypeApp;
 import com.theuran.launcher.ui.UIKeysApp;
 import mchorse.bbs.gamemode.GameMode;
-import mchorse.bbs.BBS;
 import mchorse.bbs.game.utils.ContentType;
 import mchorse.bbs.l10n.keys.IKey;
+import mchorse.bbs.network.Dispatcher;
+import mchorse.bbs.network.packets.RequestVersionManifestPacket;
 import mchorse.bbs.ui.dashboard.UIDashboard;
 import mchorse.bbs.ui.dashboard.panels.UIDataDashboardPanel;
 import mchorse.bbs.ui.framework.UIContext;
@@ -15,13 +16,6 @@ import mchorse.bbs.ui.framework.elements.utils.UILabel;
 import mchorse.bbs.ui.framework.elements.utils.UIText;
 import mchorse.bbs.ui.utils.icons.Icons;
 import mchorse.bbs.utils.colors.Colors;
-
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class UIGameModePanel extends UIDataDashboardPanel<GameMode> {
     public UIButton play;
@@ -48,7 +42,7 @@ public class UIGameModePanel extends UIDataDashboardPanel<GameMode> {
     }
 
     private void runMinecraftClient(UIButton button) {
-
+        Dispatcher.send(new RequestVersionManifestPacket(this.data.version.get()), TheLauncherEngine.getChannel());
     }
 
     @Override

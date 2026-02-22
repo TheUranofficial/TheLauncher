@@ -63,7 +63,7 @@ public class DataStorageUtils {
 
             DataStorage.writeToStream(stream, type);
 
-            ByteSerialize.writeByteArray(packet, stream.toByteArray());
+            ByteSerialize.writeBytes(packet, stream.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,7 +71,7 @@ public class DataStorageUtils {
 
     public static BaseType readFromPacket(ByteBuf packet) {
         try {
-            ByteArrayInputStream stream = new ByteArrayInputStream(ByteSerialize.readByteArray(packet));
+            ByteArrayInputStream stream = new ByteArrayInputStream(ByteSerialize.readBytes(packet));
 
             return DataStorage.readFromStream(stream);
         } catch (Exception e) {
